@@ -27,5 +27,10 @@ class PUZZLEPLATFORMER_API AMovingPlatform : public AStaticMeshActor
 		FVector TargetLocation;
 
 	private:
+		FVector GlobalStartLocation;
+		FVector GlobalTargetLocation;
+		float GlobalJourneyLength;
 		FVector UnitMoveDirection;
+		void UpdateUnitMoveDirection();
+		void MoveInOppositeDirection();
 };

@@ -15,9 +15,11 @@ void AMovingPlatform::BeginPlay() {
 	if (HasAuthority()) {
 		SetReplicates(true);
 		SetReplicateMovement(true);
-		// Calculate the vector direction to move in
-		FVector GlobalTargetLocation = GetTransform().TransformPosition(TargetLocation); // TargetLocation is local to this actor (relative to its origin)
-		UnitMoveDirection = (GlobalTargetLocation - GetActorLocation()).GetSafeNormal();
+		// Do some pre-calculations
+		GlobalStartLocation = GetActorLocation();
+		GlobalTargetLocation = GetTransform().TransformPosition(TargetLocation); // TargetLocation is local to this actor (relative to its origin)
+		GlobalJourneyLength = (GlobalTargetLocation - GlobalStartLocation).Size(); // Get the magnitude (length) of the vector
+		UpdateUnitMoveDirection();
 	}
 }
 
@@ -28,5 +30,20 @@ void AMovingPlatform::Tick(float DeltaTime) {
 		FVector Location = GetActorLocation();
 		Location += UnitMoveDirection * Speed * DeltaTime;
 		SetActorLocation(Location);
+		float JourneyTravelled = (GlobalStartLocation - Location).Size();
+		if (JourneyTravelled >= GlobalJourneyLength) {
+			MoveInOppositeDirection();
+		}
 	}
+}
+
+void AMovingPlatform::UpdateUnitMoveDirection() {
+	UnitMoveDirection = (GlobalTargetLocation - GlobalStartLocation).GetSafeNormal();
+}
+
+void AMovingPlatform::MoveInOppositeDirection() {
+	FVector Swap = GlobalStartLocation;
+	GlobalStartLocation = GlobalTargetLocation;
+	GlobalTargetLocation = Swap;
+	UpdateUnitMoveDirection();
 }
