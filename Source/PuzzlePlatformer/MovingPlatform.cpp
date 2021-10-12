@@ -8,6 +8,16 @@ AMovingPlatform::AMovingPlatform() {
 	SetMobility(EComponentMobility::Movable);
 }
 
+// This bit of code makes sure that the server propogates down the replication to the client
+void AMovingPlatform::BeginPlay() {
+	Super::BeginPlay();
+
+	if (HasAuthority()) {
+	SetReplicates(true);
+	SetReplicateMovement(true);
+	}
+}
+
 void AMovingPlatform::Tick(float DeltaTime) {
 	// Available on the actor, TRUE means server
 	if (HasAuthority()) {
