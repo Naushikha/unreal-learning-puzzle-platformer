@@ -19,6 +19,13 @@ class PUZZLEPLATFORMER_API AMovingPlatform : public AStaticMeshActor
 		virtual void BeginPlay() override;
 
 		virtual void Tick(float DeltaTime) override;
+
 		UPROPERTY(EditAnyWhere)
 		float Speed = 20;
+
+		UPROPERTY(EditAnywhere, Meta = (MakeEditWidget = true)) // Gizmo FVector Property
+		FVector TargetLocation;
+
+	private:
+		FVector UnitMoveDirection;
 };
