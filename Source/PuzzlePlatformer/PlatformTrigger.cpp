@@ -4,6 +4,8 @@
 #include "PlatformTrigger.h"
 #include "Components/BoxComponent.h"
 
+#include "MovingPlatform.h"
+
 // Sets default values
 APlatformTrigger::APlatformTrigger()
 {
@@ -32,9 +34,16 @@ void APlatformTrigger::Tick(float DeltaTime)
 // This wasn't available straight away > https://docs.unrealengine.com/4.26/en-US/ProgrammingAndScripting/ClassCreation/CodeOnly/ 
 void APlatformTrigger::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
 	UE_LOG(LogTemp, Warning, TEXT("Activated"));
+	// https://answers.unrealengine.com/questions/253067/for-each-loop-on-tarray.html
+	for (AMovingPlatform* Platform : PlatformsToTrigger) {
+		Platform->AddActiveTrigger();
+	}
 }
 
 void APlatformTrigger::OnOverlapEnd(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) {
 	UE_LOG(LogTemp, Warning, TEXT("Deactivated"));
+	for (AMovingPlatform* Platform : PlatformsToTrigger) {
+		Platform->RemoveActiveTrigger();
+	}
 }
 

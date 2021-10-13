@@ -24,9 +24,9 @@ void AMovingPlatform::BeginPlay() {
 }
 
 void AMovingPlatform::Tick(float DeltaTime) {
+	Super::Tick(DeltaTime);
 	// Available on the actor, TRUE means server
-	if (HasAuthority()) {
-		Super::Tick(DeltaTime);
+	if (HasAuthority() && ActiveTriggers) {
 		FVector Location = GetActorLocation();
 		Location += UnitMoveDirection * Speed * DeltaTime;
 		SetActorLocation(Location);
@@ -47,3 +47,6 @@ void AMovingPlatform::MoveInOppositeDirection() {
 	GlobalTargetLocation = Swap;
 	UpdateUnitMoveDirection();
 }
+
+void AMovingPlatform::AddActiveTrigger() { ActiveTriggers++; }
+void AMovingPlatform::RemoveActiveTrigger() { if (ActiveTriggers) ActiveTriggers--; }

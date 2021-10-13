@@ -26,6 +26,9 @@ public:
 	UPROPERTY(EditAnywhere, Meta = (MakeEditWidget = true)) // Gizmo FVector Property
 		FVector TargetLocation;
 
+	void AddActiveTrigger();
+	void RemoveActiveTrigger();
+
 private:
 	FVector GlobalStartLocation;
 	FVector GlobalTargetLocation;
@@ -33,4 +36,7 @@ private:
 	FVector UnitMoveDirection;
 	void UpdateUnitMoveDirection();
 	void MoveInOppositeDirection();
+
+	UPROPERTY(EditAnywhere)
+		int ActiveTriggers = 1;
 };
