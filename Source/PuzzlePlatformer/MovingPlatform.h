@@ -7,30 +7,30 @@
 #include "MovingPlatform.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class PUZZLEPLATFORMER_API AMovingPlatform : public AStaticMeshActor
 {
 	GENERATED_BODY()
-	public:
-		AMovingPlatform();
+public:
+	AMovingPlatform();
 
-		virtual void BeginPlay() override;
+	virtual void BeginPlay() override;
 
-		virtual void Tick(float DeltaTime) override;
+	virtual void Tick(float DeltaTime) override;
 
-		UPROPERTY(EditAnyWhere)
+	UPROPERTY(EditAnyWhere)
 		float Speed = 20;
 
-		UPROPERTY(EditAnywhere, Meta = (MakeEditWidget = true)) // Gizmo FVector Property
+	UPROPERTY(EditAnywhere, Meta = (MakeEditWidget = true)) // Gizmo FVector Property
 		FVector TargetLocation;
 
-	private:
-		FVector GlobalStartLocation;
-		FVector GlobalTargetLocation;
-		float GlobalJourneyLength;
-		FVector UnitMoveDirection;
-		void UpdateUnitMoveDirection();
-		void MoveInOppositeDirection();
+private:
+	FVector GlobalStartLocation;
+	FVector GlobalTargetLocation;
+	float GlobalJourneyLength;
+	FVector UnitMoveDirection;
+	void UpdateUnitMoveDirection();
+	void MoveInOppositeDirection();
 };
